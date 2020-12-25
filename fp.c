@@ -102,7 +102,19 @@ int cekLogin(char *user, char *password){
 }
 
 void hapus(int x){
-	
+	for(x;x<indeks;x++){
+		strcpy(akun[x].nama,akun[x+1].nama);
+		strcpy(akun[x].kelamin,akun[x+1].kelamin);
+		strcpy(akun[x].pekerjaan,akun[x+1].pekerjaan);
+		strcpy(akun[x].nohp,akun[x+1].nohp);
+		strcpy(akun[x].username,akun[x+1].username);
+		strcpy(akun[x].password,akun[x+1].password);
+		akun[x].pinjaman=akun[x+1].pinjaman;
+		akun[x].simpanan=akun[x+1].simpanan;
+		akun[x].cicilan=akun[x+1].cicilan;
+		akun[x].besarcicilan=akun[x+1].besarcicilan;
+	}
+	indeks-=1;
 }
 
 void tampil(){
@@ -170,7 +182,7 @@ int main(){
 	char user[16];
 	char password[16];
 	int login=-1;
-	int keluar;
+	int keluar=0;
 	
 	//Atribut koperasi
 	int kas=5000000, pinjam, cicil;
@@ -246,6 +258,10 @@ int main(){
 			}
 			else if(input==0){
 				keluar=1;
+				system("cls");
+				printf("============Koperasi============\n");
+				printf("Terima kasih telah menggunakan aplikasi Koperasi Maju Mundur.");
+				break;
 			}
 			else{
 				goto menu;
@@ -330,11 +346,25 @@ int main(){
 					printf("============Hapus Anggota============\n");
 					printf("Pilih Data Anggota yang ingin dihapus!\n\n");
 					tampil();
+					printf("Masukkan angka 0 untuk kembali\n");
 					printf("\nInput : ");
 					scanf("%d", &input);
 					system("cls");
 					
-					int i=input;
+					int i=input-1;
+					if(input==0){
+						system("cls");
+						goto menu;
+					}
+					else if(input<=indeks){
+					}
+					else{
+						printf("======================================\n");
+						printf("Tidak ada Data anggota pada nomor %d!",input);
+						getch();
+						system("cls");
+						goto hapus;
+					}
 					printf("============Hapus Anggota============\n");
 					printf("Nama\t\t: %s\n",akun[i].nama);
 					printf("Kelamin\t\t: %s\n",akun[i].kelamin);
@@ -553,5 +583,5 @@ int main(){
 			}
 		}
 	}
-	while(keluar==1);
+	while(keluar==0);
 }
