@@ -12,8 +12,8 @@ struct akun{
 	int besarcicilan;
 	int cicilan;
 	char kelamin[15];
-	char pekerjaan[12];
-	char nohp[13];
+	char pekerjaan[15];
+	char nohp[15];
 };
 typedef struct akun anggota;
 
@@ -68,7 +68,7 @@ void buatAkun(){
 			return;
 		}
 	}
-	if(!strcmp(&akun[indeks].username, "admin")){
+	if(!strcmp(akun[indeks].username, "admin")){
 		printf("Anda tidak diperkenankan untuk menggunakan username ini.");
 		getch();
 		system("cls");
@@ -253,9 +253,46 @@ int main(){
 	char password[16];
 	int login=-1;
 	int keluar=0;
-	
+	int i;
 	//Atribut koperasi
 	int kas=5000000, pinjam, cicil;
+	
+	//FILE
+	FILE * fpbuka;
+	fpbuka = fopen("data.txt", "r");
+	
+	if(fpbuka==0){
+		printf("Warning... Gagal menginisialisasi database...\n");
+	}
+	else{
+		while(!feof(fpbuka)){
+			for(i=0;i<=2;i++){
+				if(i==0){
+					fscanf(fpbuka, "%d", &kas);
+				}
+				else if(i==1){
+					fscanf(fpbuka, "%d", &indeks);
+				}
+				else if(i==2){
+					fscanf(fpbuka, "%d", &ascending);
+				}
+			}
+			for(i=0;!feof(fpbuka);i++){
+				fscanf(fpbuka, " %[^\n]%*c", &akun[i].nama);
+				fscanf(fpbuka, " %[^\n]%*c", &akun[i].username);
+				fscanf(fpbuka, " %[^\n]%*c", &akun[i].password);
+				fscanf(fpbuka, " %[^\n]%*c", &akun[i].kelamin);
+				fscanf(fpbuka, " %[^\n]%*c", &akun[i].pekerjaan);
+				fscanf(fpbuka, " %[^\n]%*c", &akun[i].nohp);
+				fscanf(fpbuka, "%d", &akun[i].simpanan);
+				fscanf(fpbuka, "%d", &akun[i].pinjaman);
+				fscanf(fpbuka, "%d", &akun[i].besarcicilan);
+				fscanf(fpbuka, "%d\n", &akun[i].cicilan);
+			}
+		}
+		fclose(fpbuka);
+	}
+	
 	
 	do{
 		menu:
@@ -333,8 +370,32 @@ int main(){
 			else if(input==0){
 				keluar=1;
 				system("cls");
-				printf("============Koperasi============\n");
-				printf("Terima kasih telah menggunakan aplikasi Koperasi Maju Mundur.");
+				
+				remove("data.txt");
+				FILE * fpwrite;
+				fpwrite = fopen("data.txt", "w");
+				
+				fprintf(fpwrite, "%d\n",kas);
+				fprintf(fpwrite, "%d\n",indeks);
+				fprintf(fpwrite, "%d\n",ascending);
+				for(i=0;i<indeks;i++){
+					fprintf(fpwrite, "%s\n",akun[i].nama);
+					fprintf(fpwrite, "%s\n",akun[i].username);
+					fprintf(fpwrite, "%s\n",akun[i].password);
+					fprintf(fpwrite, "%s\n",akun[i].kelamin);
+					fprintf(fpwrite, "%s\n",akun[i].pekerjaan);
+					fprintf(fpwrite, "%s\n",akun[i].nohp);
+					fprintf(fpwrite, "%d\n",akun[i].simpanan);
+					fprintf(fpwrite, "%d\n",akun[i].pinjaman);
+					fprintf(fpwrite, "%d\n",akun[i].besarcicilan);
+					fprintf(fpwrite, "%d\n",akun[i].cicilan);
+				}
+				fclose(fpwrite);	
+				printf("==============Koperasi============\n");
+				printf("============-------------==========\n");
+				printf("Data telah disimpan ke dalam database.\n");
+				printf("===================================\n\n");
+				printf("Terima Kasih telah menggunakan aplikasi Koperasi Maju Mundur.");
 				break;
 			}
 			else{
@@ -579,21 +640,22 @@ int main(){
 							printf("Masukkan Username Baru : ");
 							scanf(" %[^\n]%*c", &temp);
 							//Pengecekan username duplikasi
-							int i=0;
-							for(i=0; i<indeks; i++){
-								if(!strcmp(akun[i].username, temp)){
+							int j=0;
+							for(j=0; j<indeks; j++){
+								if(!strcmp(akun[j].username, temp)){
 									printf("Username ini telah ada.");
 									getch();
 									system("cls");
 									goto pilihubah;
 								}
 							}
-							if(!strcmp(&akun[i].username, "admin")){
+							if(!strcmp(temp, "admin")){
 								printf("Anda tidak diperkenankan untuk menggunakan username ini.");
 								getch();
 								system("cls");
 								goto pilihubah;
 							}
+							strcpy(akun[i].username, temp);
 							ascending=0;
 						}
 						else if(input==6){
@@ -610,7 +672,7 @@ int main(){
 						}
 						printf("============Ubah Anggota============\n");
 						printf("1. Nama\t\t: %s\n",akun[i].nama);
-						printf("2. Kelamin\t\t: %s\n",akun[i].kelamin);
+						printf("2. Kelamin\t: %s\n",akun[i].kelamin);
 						printf("3. Pekerjaan\t: %s\n",akun[i].pekerjaan);
 						printf("4. Nomor HP\t: %s\n",akun[i].nohp);
 						printf("-----------------------------\n");
@@ -833,23 +895,65 @@ int main(){
 			printf("2. Simpan uang\n");
 			printf("3. Pinjam uang\n");
 			printf("4. Bayar cicilan\n");
-			printf("5. Bayar Simpanan Wajib");
-			printf("\n0. Logout\n");
+			printf("5. Bayar Simpanan Wajib\n");
+			printf("6. Akun\n");
+			printf("---------------------------------\n");
+			printf("0. Logout\n");
+			printf("=================================\n");
 			printf("Input : ");
 			scanf("%d", &input);
 			system("cls");
 			if(input==1){
-				printf("============Tabungan============\n\n");
+				printf("============Tabungan============\n");
 				if(akun[login].simpanan==0){
 					printf("Anda tidak memiliki tabungan...");
+					printf("--------------------------------\n\n");
 					getch();
 					system("cls");
 					goto menu;
 				}
 				printf("Anda memiliki tabungan sebesar Rp.%d\n\n",akun[login].simpanan);
-				printf("Kembali ke menu...");
-				getch();
+				printf("--------------------------------\n\n");
+				printf("Apakah anda ingin mengambil tabungan anda?\n");
+				printf("1. Ya\n");
+				printf("2. Tidak\n");
+				printf("================================\n");
+				printf("Input : ");
+				scanf("%d",&input);
 				system("cls");
+				
+				if(input==1){
+					int uang;
+					withdraw:
+					printf("============Tabungan============\n");
+					printf("-----------Ambil Uang-----------\n");
+					printf("Saldo : %d\n",akun[login].simpanan);
+					printf("--------------------------------\n");
+					printf("0. Kembali\n");
+					printf("================================\n\n");
+					printf("Masukkan jumlah uang untuk diambil : ");
+					scanf("%d", &uang);
+					if(uang==0){
+						system("cls");
+						goto menu;
+					}
+					else if(uang<akun[login].simpanan){
+						akun[login].simpanan-=uang;
+						printf("Transaksi berhasil!");
+						getch();
+						system("cls");
+					}
+					else if(uang>akun[login].simpanan){
+						printf("Saldo anda tidak cukup...");
+						getch();
+						system("cls");
+						goto withdraw;
+					}
+					else{
+						system("cls");
+						goto withdraw;
+					}
+				}				
 			}
 			else if(input==2){
 				printf("============Tabungan============\n\n");
@@ -978,6 +1082,58 @@ int main(){
 				getch();
 				system("cls");
 			}
+			else if(input==6){
+				pengaturan:
+				printf("============Pengaturan Akun============\n\n");
+				printf("1. Ganti username\n");
+				printf("2. Ganti password\n");
+				printf("---------------------------------------\n");
+				printf("0. Kembali\n\n");
+				printf("Input : "); 
+				scanf("%d",&input);
+				printf("\n");
+				if(input==1){
+					char temp[40];
+					printf("Masukkan Username Baru : ");
+					scanf(" %[^\n]%*c", &temp);
+					//Pengecekan username duplikasi
+					int i=0;
+					for(i=0; i<indeks; i++){
+						if(!strcmp(akun[i].username, temp)){
+							printf("Username ini telah ada.");
+							getch();
+							system("cls");
+							goto menu;
+						}
+					}
+					if(!strcmp(temp, "admin")){
+						printf("Anda tidak diperkenankan untuk menggunakan username ini.");
+						getch();
+						system("cls");
+						goto menu;
+					}
+					strcpy(akun[login].username, temp);
+					printf("Data telah berhasil diubah!\n");
+					getch();
+					system("cls");
+					ascending=0;
+				}
+				else if(input==2){
+					printf("Masukkan Password Baru : ");
+					scanf(" %[^\n]%*c", &akun[login].password);
+					printf("Data telah berhasil diubah!\n");
+					getch();
+					system("cls");
+				}
+				else if(input==0){
+					system("cls");
+					goto menu;
+				}
+				else {
+					system("cls");
+					goto pengaturan;
+				}
+			}
 			else if(input==0){
 				printf("============Log Out============\n\n");
 				printf("Anda akan keluar dari akun.\n");
@@ -987,7 +1143,7 @@ int main(){
 				scanf("%d", &input);
 
 				if(input==1){
-					login=-1;	
+					login=-1;
 				}
 				system("cls");
 			}
