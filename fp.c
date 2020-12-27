@@ -59,14 +59,14 @@ void buatAkun(){
 	int i=0;
 	for(i=0; i<indeks; i++){
 		if(!strcmp(akun[i].username, akun[indeks].username)){
-			printf("Error.");
+			printf("Username ini telah ada.");
 			getch();
 			system("cls");
 			return;
 		}
 	}
 	if(!strcmp(&akun[indeks].username, "admin")){
-		printf("Error.");
+		printf("Anda tidak diperkenankan untuk menggunakan username ini.");
 		getch();
 		system("cls");
 		return;
@@ -344,8 +344,6 @@ int main(){
 						system("cls");
 						goto anggota;
 					}
-					//variable admin untuk memasukkan parameter admin pada tampil(int admin);
-					
 					//fungsi tampil()
 					printf("============Hapus Anggota============\n");
 					printf("Pilih Data Anggota yang ingin dihapus!\n\n");
@@ -392,6 +390,159 @@ int main(){
 						hapus(i);
 						printf("============Hapus Anggota============\n\n");
 						printf("Data telah dihapus.");
+						getch();
+						system("cls");
+					}
+					else if(input==2){
+						goto hapus;
+					}
+					else{
+						goto anggota;
+					}
+				}
+				else if(input==3){
+					ubah:
+					//Pengecekan isi data akun
+					if(indeks==0){
+						printf("========================\n");
+						printf("Tidak ada data! Silahkan input data terlebih dahulu!");
+						getch();
+						system("cls");
+						goto anggota;
+					}
+					//fungsi tampil()
+					printf("============Ubah Anggota============\n");
+					printf("Pilih Data Anggota yang ingin diubah!\n\n");
+					tampil();
+					printf("Masukkan angka 0 untuk kembali\n");
+					printf("\nInput : ");
+					scanf("%d", &input);
+					system("cls");
+					
+					int i=input-1;
+					if(input==0){
+						system("cls");
+						goto menu;
+					}
+					else if(input<=indeks){
+					}
+					else{
+						printf("======================================\n");
+						printf("Tidak ada Data anggota pada nomor %d!",input);
+						getch();
+						system("cls");
+						goto hapus;
+					}
+					printf("============Ubah Anggota============\n");
+					printf("Nama\t\t: %s\n",akun[i].nama);
+					printf("Kelamin\t\t: %s\n",akun[i].kelamin);
+					printf("Pekerjaan\t: %s\n",akun[i].pekerjaan);
+					printf("Nomor HP\t: %s\n",akun[i].nohp);
+					printf("-----------------------------\n");
+					printf("Tabungan\t: %d\n",akun[i].simpanan);
+					printf("Pinjaman\t: %d\n",akun[i].pinjaman);
+					printf("-----------------------------\n");
+					printf("username\t: %s\n",akun[i].username);
+					printf("password\t: %s\n",akun[i].password);
+					printf("=====================================\n\n");
+					printf("Apakah anda ingin mengubah akun ini?\n");
+					printf("1. Ubah\n");
+					printf("2. Batal\n\n");
+					printf("(Kembali ke menu)\n");
+					printf("Input : ");
+					scanf("%d", &input);
+					system("cls");
+					if(input==1){
+						pilihubah:
+						printf("============Ubah Anggota============\n");
+						printf("1. Nama\t\t: %s\n",akun[i].nama);
+						printf("2. Kelamin\t: %s\n",akun[i].kelamin);
+						printf("3. Pekerjaan\t: %s\n",akun[i].pekerjaan);
+						printf("4. Nomor HP\t: %s\n",akun[i].nohp);
+						printf("-----------------------------\n");
+						printf("5. username\t: %s\n",akun[i].username);
+						printf("6. password\t: %s\n",akun[i].password);
+						printf("=====================================\n\n");
+						printf("Pilih data yang ingin diubah.\n");
+						printf("0. Kembali ke menu\n\n");
+						printf("Input : ");
+						scanf("%d", &input);
+						system("cls");
+						printf("============Ubah Anggota============\n\n");
+							
+						if(input==1){
+							printf("Masukkan Nama Baru : ");
+							scanf(" %[^\n]%*c", &akun[i].nama);
+						}
+						else if(input==2){
+							ubahkelamin:
+							printf("Anda Laki-Laki atau perempuan?\n");
+							printf("1. Laki Laki\n");
+							printf("2. Perempuan\n");
+							kelamin:
+							printf("Input : ");
+							scanf("%d",&input);
+							if(input==1){
+								strcpy(akun[i].kelamin,"Laki-laki");
+							}
+							else if(input==2){
+								strcpy(akun[i].kelamin,"Perempuan");
+							}
+							else{
+								goto ubahkelamin;
+							}
+						}
+						else if(input==3){
+							printf("Masukkan Pekerjaan Baru : ");
+							scanf(" %[^\n]%*c", &akun[i].pekerjaan);
+						}
+						else if(input==4){
+							printf("Masukkan Nomor Hp Baru : ");
+							scanf(" %[^\n]%*c", &akun[i].nohp);
+						}
+						else if(input==5){
+							char temp[40];
+							printf("Masukkan Username Baru : ");
+							scanf(" %[^\n]%*c", &temp);
+							//Pengecekan username duplikasi
+							int i=0;
+							for(i=0; i<indeks; i++){
+								if(!strcmp(akun[i].username, temp)){
+									printf("Username ini telah ada.");
+									getch();
+									system("cls");
+									goto pilihubah;
+								}
+							}
+							if(!strcmp(&akun[i].username, "admin")){
+								printf("Anda tidak diperkenankan untuk menggunakan username ini.");
+								getch();
+								system("cls");
+								goto pilihubah;
+							}
+						}
+						else if(input==6){
+							printf("Masukkan Password Baru : ");
+							scanf(" %[^\n]%*c", &akun[i].password);
+						}
+						else if(input==0){
+							system("cls");
+							goto menu;
+						}
+						else {
+							system("cls");
+							goto pilihubah;
+						}
+						printf("============Ubah Anggota============\n");
+						printf("1. Nama\t\t: %s\n",akun[i].nama);
+						printf("2. Kelamin\t\t: %s\n",akun[i].kelamin);
+						printf("3. Pekerjaan\t: %s\n",akun[i].pekerjaan);
+						printf("4. Nomor HP\t: %s\n",akun[i].nohp);
+						printf("-----------------------------\n");
+						printf("5. username\t: %s\n",akun[i].username);
+						printf("6. password\t: %s\n",akun[i].password);
+						printf("=====================================\n\n");
+						printf("Data telah berhasil diubah!\n");
 						getch();
 						system("cls");
 					}
