@@ -1,5 +1,5 @@
-6000000
-1
+6839996
+4
 0
 Rifki Riza Alfiansyah
 rifkira
@@ -8,6 +8,36 @@ Laki-laki
 Mahasiswa
 19081010105
 175000
+0
+0
+0
+Aditya
+aditya
+adid123
+Laki-laki
+Mahasiswa
+19081010104
+0
+2209984
+84999
+26
+Dafa
+dafard
+dapukniboi
+Laki-laki
+mahasiswa
+08775234231
+4000000
+0
+0
+0
+Ario hartoko
+hartok
+toko54321
+Laki-laki
+mahasiswa
+08195919131
+65000
 0
 0
 0

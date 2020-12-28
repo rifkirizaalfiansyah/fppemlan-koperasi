@@ -214,13 +214,75 @@ void sort(int jenis, int metode){
 	}
 }
 
-//Former codeblock for jumpsearch method by username
-/*
+//Fungsi untuk mencari nilai terendah antara 2 value(Untuk search)
 int min(int num1, int num2) 
 {
     return (num1 > num2 ) ? num2 : num1;
 }
 
+cari(char *dicari, int jenis){
+	//Mencari range blok untuk diskip pencariannya.
+	int jump=sqrt(indeks);
+	int back=0;
+	
+	//Mencari yang dicari di setiap blok
+	if(jenis==1){
+		while(strcmp(akun[min(jump, indeks)-1].nama, dicari)<0){
+			back=jump;
+			jump+=sqrt(indeks);
+			if(back>=indeks){
+				//Tidak ketemu
+				return -1;
+			}
+		}
+		
+		//Menggunakan linear search untuk mencari. dimulai dari variable back
+		while(strcmp(akun[back].nama, dicari)<0){
+			back++;
+			
+			//Jika mencapai blok selanjutnya atau indeks terakhir, maka yang dicari tidak ketemu.
+			if(back==min(jump,indeks)){
+				return -1;
+			}
+		}
+		//Jika ternyata ketemu, maka fungsi akan return nilai indeks dari array akun yang dicari
+		if(!strcmp(akun[back].nama, dicari)){
+			return back;
+		}
+		return -1;
+	}
+	else if(jenis==2){
+		while(strcmp(akun[min(jump, indeks)-1].username, dicari)<0){
+			back=jump;
+			jump+=sqrt(indeks);
+			if(back>=indeks){
+				//Tidak ketemu
+				return -1;
+			}
+		}
+		
+		//Menggunakan linear search untuk mencari. dimulai dari variable back
+		while(strcmp(akun[back].username, dicari)<0){
+			back++;
+			
+			//Jika mencapai blok selanjutnya atau indeks terakhir, maka yang dicari tidak ketemu.
+			if(back==min(jump,indeks)){
+				return -1;
+			}
+		}
+		//Jika ternyata ketemu, maka fungsi akan return nilai indeks dari array akun yang dicari
+		if(!strcmp(akun[back].username, dicari)){
+			return back;
+		}
+		return -1;
+	}
+}
+
+
+
+
+//Former codeblock for jumpsearch method by username
+/*
 int cariData(char *x){
 	int jump = sqrt(indeks);
 	int back = 0;
@@ -424,7 +486,7 @@ int main(){
 					printf("============Koperasi============\n");
 					printf("Kas Koperasi saat ini : Rp.%d\n\n", kas);
 					printf("Modal Awal Koperasi : Rp.5000000\n");
-					printf("Penghasilan dari Simpanan Pokok sebesar : Rp.%d\n", indeks*100000);
+					printf("Penghasilan dari Simpanan Pokok sebesar : Rp.%d\n", indeks*1000000);
 					
 					int totalpinjam=0, i, totalsimpan=0;
 					for(i=0; i<indeks; i++){
@@ -691,177 +753,289 @@ int main(){
 					}
 				}
 				else if(input==4){
-				sort:
-				//Pengecekan isi data akun
-				if(indeks<2){
-					printf("========================\n");
-					printf("Data kurang dari 2, Tidak bisa melakukan Pengurutan...");
-					getch();
+					sort:
+					//Pengecekan isi data akun
+					if(indeks<2){
+						printf("========================\n");
+						printf("Data kurang dari 2, Tidak bisa melakukan Pengurutan...");
+						getch();
+						system("cls");
+						goto anggota;
+					}
+					//fungsi tampil()
+					printf("============Sortir Anggota============\n\n");
+					printf("Diurutkan berdasarkan apa?\n");
+					printf("1. Nama\n");
+					printf("2. Username\n");
+					printf("3. Simpanan\n");
+					printf("4. Pinjaman\n");
+					printf("--------------------------------------\n");
+					printf("0. Kembali\n\n");
+					printf("\nInput : ");
+					scanf("%d", &input);
 					system("cls");
-					goto anggota;
-				}
-				//fungsi tampil()
-				printf("============Sortir Anggota============\n\n");
-				printf("Diurutkan berdasarkan apa?\n");
-				printf("1. Nama\n");
-				printf("2. Username\n");
-				printf("3. Simpanan\n");
-				printf("4. Pinjaman\n");
-				printf("--------------------------------------\n");
-				printf("0. Kembali\n\n");
-				printf("\nInput : ");
-				scanf("%d", &input);
-				system("cls");
 				
-				if(input==1){
-					sortnama:
-					printf("============Sortir Anggota============\n");
-					printf("Sorting : Nama\n");
-					printf("--------------------------------------\n\n");
-					printf("Silahkan pilih metode pengurutan.\n");
-					printf("1. Ascending\n");
-					printf("2. Descending\n\n");
-					printf("0. Kembali\n\n");
-					printf("Input : ");
-					scanf("%d", &input);
-					
 					if(input==1){
-						sort(1, 1);
-						printf("Data telah berhasil diurutkan!");
-						ascending=1;
-						getch();
-						system("cls");
+						sortnama:
+						printf("============Sortir Anggota============\n");
+						printf("Sorting : Nama\n");
+						printf("--------------------------------------\n\n");
+						printf("Silahkan pilih metode pengurutan.\n");
+						printf("1. Ascending\n");
+						printf("2. Descending\n\n");
+						printf("0. Kembali\n\n");
+						printf("Input : ");
+						scanf("%d", &input);
+						
+						if(input==1){
+							sort(1, 1);
+							printf("Data telah berhasil diurutkan!");
+							ascending=1;
+							getch();
+							system("cls");
+						}
+						else if(input==2){
+							sort(1, 0);
+							printf("Data telah berhasil diurutkan!");
+							ascending=0;
+							getch();
+							system("cls");
+						}
+						else if(input==0){
+							system("cls");
+							goto sort;
+						}
+						else{
+							system("cls");
+							goto sortnama;
+						}
 					}
 					else if(input==2){
-						sort(1, 0);
-						printf("Data telah berhasil diurutkan!");
-						ascending=0;
-						getch();
-						system("cls");
+						sortusername:
+						printf("============Sortir Anggota============\n\n");
+						printf("Sorting : Username\n");
+						printf("--------------------------------------\n\n");
+						printf("Silahkan pilih metode pengurutan.\n");
+						printf("1. Ascending\n");
+						printf("2. Descending\n\n");
+						printf("0. Kembali\n\n");
+						printf("Input : ");
+						scanf("%d", &input);
+						
+						if(input==1){
+							sort(2, 1);
+							printf("Data telah berhasil diurutkan!");
+							ascending=1;
+							getch();
+							system("cls");
+						}
+						else if(input==2){
+							sort(2, 0);
+							printf("Data telah berhasil diurutkan!");
+							ascending=0;
+							getch();
+							system("cls");
+						}
+						else if(input==0){
+							system("cls");
+							goto sort;
+						}
+						else{
+							system("cls");
+							goto sortusername;
+						}
 					}
-					else if(input==0){
-						system("cls");
-						goto sort;
-					}
-					else{
-						system("cls");
-						goto sortnama;
-					}
-				}
-				else if(input==2){
-					sortusername:
-					printf("============Sortir Anggota============\n\n");
-					printf("Sorting : Username\n");
-					printf("--------------------------------------\n\n");
-					printf("Silahkan pilih metode pengurutan.\n");
-					printf("1. Ascending\n");
-					printf("2. Descending\n\n");
-					printf("0. Kembali\n\n");
-					printf("Input : ");
-					scanf("%d", &input);
-					
-					if(input==1){
-						sort(2, 1);
-						printf("Data telah berhasil diurutkan!");
-						ascending=1;
-						getch();
-						system("cls");
-					}
-					else if(input==2){
-						sort(2, 0);
-						printf("Data telah berhasil diurutkan!");
-						ascending=0;
-						getch();
-						system("cls");
-					}
-					else if(input==0){
-						system("cls");
-						goto sort;
-					}
-					else{
-						system("cls");
-						goto sortusername;
-					}
-				}
 					else if(input==3){
-					sortsimpanan:
-					printf("============Sortir Anggota============\n\n");
-					printf("Sorting : Simpanan\n");
-					printf("--------------------------------------\n\n");
-					printf("Silahkan pilih metode pengurutan.\n");
-					printf("1. Ascending\n");
-					printf("2. Descending\n\n");
-					printf("0. Kembali\n\n");
-					printf("Input : ");
-					scanf("%d", &input);
-					
-					if(input==1){
-						sort(3, 1);
-						printf("Data telah berhasil diurutkan!");
-						ascending=1;
-						getch();
-						system("cls");
+						sortsimpanan:
+						printf("============Sortir Anggota============\n\n");
+						printf("Sorting : Simpanan\n");
+						printf("--------------------------------------\n\n");
+						printf("Silahkan pilih metode pengurutan.\n");
+						printf("1. Ascending\n");
+						printf("2. Descending\n\n");
+						printf("0. Kembali\n\n");
+						printf("Input : ");
+						scanf("%d", &input);
+						
+						if(input==1){
+							sort(3, 1);
+							printf("Data telah berhasil diurutkan!");
+							ascending=1;
+							getch();
+							system("cls");
+						}
+						else if(input==2){
+							sort(3, 0);
+							printf("Data telah berhasil diurutkan!");
+							ascending=0;
+							getch();
+							system("cls");
+						}
+						else if(input==0){
+							system("cls");
+							goto sort;
+						}
+						else{
+							system("cls");
+							goto sortsimpanan;
+						}
 					}
-					else if(input==2){
-						sort(3, 0);
-						printf("Data telah berhasil diurutkan!");
-						ascending=0;
-						getch();
-						system("cls");
+					else if(input==4){
+						sortpinjaman:
+						printf("============Sortir Anggota============\n\n");
+						printf("Sorting : Pinjaman\n");
+						printf("--------------------------------------\n\n");
+						printf("Silahkan pilih metode pengurutan.\n");
+						printf("1. Ascending\n");
+						printf("2. Descending\n\n");
+						printf("0. Kembali\n\n");
+						printf("Input : ");
+						scanf("%d", &input);
+						
+						if(input==1){
+							sort(4, 1);
+							printf("Data telah berhasil diurutkan!");
+							ascending=1;
+							getch();
+							system("cls");
+						}
+						else if(input==2){
+							sort(4, 0);
+							printf("Data telah berhasil diurutkan!");
+							ascending=0;
+							getch();
+							system("cls");
+						}
+						else if(input==0){
+							system("cls");
+							goto sort;
+						}
+						else{
+							system("cls");
+							goto sortpinjaman;
+						}
 					}
 					else if(input==0){
 						system("cls");
-						goto sort;
+						goto menu;
 					}
 					else{
 						system("cls");
-						goto sortsimpanan;
+						goto sort;
 					}
 				}
-				else if(input==4){
-					sortpinjaman:
-					printf("============Sortir Anggota============\n\n");
-					printf("Sorting : Pinjaman\n");
-					printf("--------------------------------------\n\n");
-					printf("Silahkan pilih metode pengurutan.\n");
-					printf("1. Ascending\n");
-					printf("2. Descending\n\n");
-					printf("0. Kembali\n\n");
-					printf("Input : ");
-					scanf("%d", &input);
-					
-					if(input==1){
-						sort(4, 1);
-						printf("Data telah berhasil diurutkan!");
-						ascending=1;
+				else if(input==5){
+					char temp[40];
+					int ketemu;
+					cari:
+					//Pengecekan isi data akun
+					if(indeks==0){
+						printf("========================\n");
+						printf("Tidak ada data akun, silahkan cari anggota terlebih dahulu...");
 						getch();
 						system("cls");
+						goto anggota;
+					}
+					//fungsi tampil()
+					printf("============Cari Anggota============\n\n");
+					printf("Dicari berdasarkan apa?\n");
+					printf("1. Nama\n");
+					printf("2. Username\n");
+					printf("--------------------------------------\n");
+					printf("0. Kembali\n\n");
+					printf("\nInput : ");
+					scanf("%d", &input);
+					system("cls");
+				
+					if(input==1){
+						printf("============Cari Anggota============\n");
+						printf("Searching : Nama\n");
+						if(ascending==0 && indeks!=1){
+							sort(1,1);
+							printf("Data telah terurutkan secara otomatis agar bisa melakukan pencarian\n");
+							ascending=1;
+						}
+						printf("--------------------------------------\n\n");
+						printf("Masukkan nama yang dicari : ");
+						scanf(" %[^\n]%*c", &temp);
+						
+						ketemu=cari(temp, input);
+						if(ketemu==-1){
+							printf("Data tidak ditemukan...");
+							getch();
+							system("cls");
+							goto menu;
+						}
+						else{
+							printf("============Cari Anggota============\n\n");
+							printf("==========Data Anggota %d=========\n", ketemu+1);
+							printf("Nama\t\t: %s\n",akun[ketemu].nama);
+							printf("Kelamin\t\t: %s\n",akun[ketemu].kelamin);
+							printf("Pekerjaan\t: %s\n",akun[ketemu].pekerjaan);
+							printf("Nomor HP\t: %s\n",akun[ketemu].nohp);
+							printf("-----------------------------\n");
+							printf("Tabungan\t: %d\n",akun[ketemu].simpanan);
+							printf("Pinjaman\t: %d\n",akun[ketemu].pinjaman);
+							printf("Besar Cicilan\t: %d\n",akun[ketemu].besarcicilan);
+							printf("-----------------------------\n");
+							printf("username\t: %s\n",akun[ketemu].username);
+							printf("password\t: %s\n",akun[ketemu].password);
+							printf("=====================================\n\n");
+							printf("Tekan apa saja untuk kembali...");
+							getch();
+							system("cls");
+							goto menu;	
+						}
 					}
 					else if(input==2){
-						sort(4, 0);
-						printf("Data telah berhasil diurutkan!");
-						ascending=0;
-						getch();
-						system("cls");
+						printf("============Cari Anggota============\n");
+						printf("Searching : Username\n");
+						if(ascending==0 && indeks!=1){
+							sort(1,1);
+							printf("Data telah terurutkan secara otomatis agar bisa melakukan pencarian\n");
+							ascending=1;
+						}
+						printf("--------------------------------------\n\n");
+						printf("Masukkan username yang dicari : ");
+						scanf(" %[^\n]%*c", &temp);
+						
+						ketemu=cari(temp, input);
+						if(ketemu==-1){
+							printf("Data tidak ditemukan...");
+							getch();
+							system("cls");
+							goto menu;
+						}
+						else{
+							printf("============Cari Anggota============\n\n");
+							printf("==========Data Anggota %d=========\n", ketemu+1);
+							printf("Nama\t\t: %s\n",akun[ketemu].nama);
+							printf("Kelamin\t\t: %s\n",akun[ketemu].kelamin);
+							printf("Pekerjaan\t: %s\n",akun[ketemu].pekerjaan);
+							printf("Nomor HP\t: %s\n",akun[ketemu].nohp);
+							printf("-----------------------------\n");
+							printf("Tabungan\t: %d\n",akun[ketemu].simpanan);
+							printf("Pinjaman\t: %d\n",akun[ketemu].pinjaman);
+							printf("Besar Cicilan\t: %d\n",akun[ketemu].besarcicilan);
+							printf("-----------------------------\n");
+							printf("username\t: %s\n",akun[ketemu].username);
+							printf("password\t: %s\n",akun[ketemu].password);
+							printf("=====================================\n\n");
+							printf("Tekan apa saja untuk kembali...");
+							getch();
+							system("cls");
+							goto menu;	
+						}
 					}
 					else if(input==0){
 						system("cls");
-						goto sort;
+						goto menu;
 					}
 					else{
 						system("cls");
-						goto sortpinjaman;
+						goto cari;
 					}
 				}
-				else if(input==0){
-					system("cls");
-					goto menu;
-				}
-				else{
-					system("cls");
-					goto sort;
-				}
-			}
 				else if(input==0){
 					system("cls");
 					goto menu;
