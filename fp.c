@@ -25,6 +25,7 @@ int indeks=0;
 //Variabel ascended menampung boolean apakah array akun anggota sudah diurutkan secara ascending atau belum.
 //Akan berubah ketika terjadi pengurutan(true jika ascending, false jika descending). Penambahan data akan mempengaruhi ascended.
 int ascending=0;
+int metodeurut=0;
 int input;
 
 void buatAkun(){
@@ -328,7 +329,7 @@ int main(){
 	}
 	else{
 		while(!feof(fpbuka)){
-			for(i=0;i<=2;i++){
+			for(i=0;i<=3;i++){
 				if(i==0){
 					fscanf(fpbuka, "%d", &kas);
 				}
@@ -337,6 +338,9 @@ int main(){
 				}
 				else if(i==2){
 					fscanf(fpbuka, "%d", &ascending);
+				}
+				else if(i==3){
+					fscanf(fpbuka, "%d", &metodeurut);
 				}
 			}
 			for(i=0;!feof(fpbuka);i++){
@@ -425,7 +429,9 @@ int main(){
 			}
 			else if(input==2){
 				buatAkun();
-				ascending=0;
+				if(ascending==1){
+					sort(metodeurut, 1);
+				}
 				kas+=1000000;
 				system("cls");
 			}
@@ -440,6 +446,7 @@ int main(){
 				fprintf(fpwrite, "%d\n",kas);
 				fprintf(fpwrite, "%d\n",indeks);
 				fprintf(fpwrite, "%d\n",ascending);
+				fprintf(fpwrite, "%d\n",metodeurut);
 				for(i=0;i<indeks;i++){
 					fprintf(fpwrite, "%s\n",akun[i].nama);
 					fprintf(fpwrite, "%s\n",akun[i].username);
@@ -791,6 +798,7 @@ int main(){
 							sort(1, 1);
 							printf("Data telah berhasil diurutkan!");
 							ascending=1;
+							metodeurut=1;
 							getch();
 							system("cls");
 						}
@@ -826,6 +834,7 @@ int main(){
 							sort(2, 1);
 							printf("Data telah berhasil diurutkan!");
 							ascending=1;
+							metodeurut=2;
 							getch();
 							system("cls");
 						}
@@ -861,6 +870,7 @@ int main(){
 							sort(3, 1);
 							printf("Data telah berhasil diurutkan!");
 							ascending=1;
+							metodeurut=3;
 							getch();
 							system("cls");
 						}
@@ -896,6 +906,7 @@ int main(){
 							sort(4, 1);
 							printf("Data telah berhasil diurutkan!");
 							ascending=1;
+							metodeurut=4;
 							getch();
 							system("cls");
 						}
