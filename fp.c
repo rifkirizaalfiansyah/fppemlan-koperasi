@@ -3,21 +3,30 @@
 #include <string.h>
 #include <math.h>
 
+struct rekening{
+	int simpanan;
+	int bungasimpanan;
+	int pinjaman;
+	int besarpinjaman;
+	int besarcicilan;
+	int cicilan;
+	int cicilanawal;
+};
+	
 struct akun{
 	char nama[40];
 	char username[16];
 	char password[16];
-	int simpanan;
-	int pinjaman;
-	int besarcicilan;
-	int cicilan;
 	char kelamin[15];
 	char pekerjaan[15];
 	char nohp[15];
+	struct rekening tabungan;
 };
 typedef struct akun anggota;
 
-//Membuat array akun sebanyak 20 anggota
+
+
+//Membuat array struct akun sebanyak 20 anggota
 anggota akun[20];
 //indeks=indeks untuk input data.
 //indeks juga diguanakan untuk melacak banyak data.
@@ -77,9 +86,10 @@ void buatAkun(){
 	}
 	printf("Password : ");
 	scanf(" %[^\n]%*c", &akun[indeks].password);
-	akun[indeks].simpanan=0;
-	akun[indeks].pinjaman=0;
-	akun[indeks].cicilan=0;
+	akun[indeks].tabungan.simpanan=0;
+	akun[indeks].tabungan.pinjaman=0;
+	akun[indeks].tabungan.cicilan=0;
+	akun[indeks].tabungan.cicilanawal=0;
 	indeks++;
 }
 
@@ -113,10 +123,13 @@ void hapus(int x){
 		strcpy(akun[x].nohp,akun[x+1].nohp);
 		strcpy(akun[x].username,akun[x+1].username);
 		strcpy(akun[x].password,akun[x+1].password);
-		akun[x].pinjaman=akun[x+1].pinjaman;
-		akun[x].simpanan=akun[x+1].simpanan;
-		akun[x].cicilan=akun[x+1].cicilan;
-		akun[x].besarcicilan=akun[x+1].besarcicilan;
+		akun[x].tabungan.pinjaman=akun[x+1].tabungan.pinjaman;
+		akun[x].tabungan.besarpinjaman=akun[x+1].tabungan.besarpinjaman;
+		akun[x].tabungan.simpanan=akun[x+1].tabungan.simpanan;
+		akun[x].tabungan.bungasimpanan=akun[x+1].tabungan.bungasimpanan;
+		akun[x].tabungan.cicilan=akun[x+1].tabungan.cicilan;
+		akun[x].tabungan.cicilanawal=akun[x+1].tabungan.cicilanawal;
+		akun[x].tabungan.besarcicilan=akun[x+1].tabungan.besarcicilan;
 	}
 	indeks-=1;
 }
@@ -131,9 +144,9 @@ void tampil(){
 			printf("Pekerjaan\t: %s\n",akun[i].pekerjaan);
 			printf("Nomor HP\t: %s\n",akun[i].nohp);
 			printf("-----------------------------\n");
-			printf("Tabungan\t: %d\n",akun[i].simpanan);
-			printf("Pinjaman\t: %d\n",akun[i].pinjaman);
-			printf("Besar Cicilan\t: %d\n",akun[i].besarcicilan);
+			printf("Tabungan\t: Rp.%d\n",akun[i].tabungan.simpanan);
+			printf("Pinjaman\t: Rp.%d\n",akun[i].tabungan.besarpinjaman);
+			printf("Besar Cicilan\t: Rp.%d\n",akun[i].tabungan.besarcicilan);
 			printf("-----------------------------\n");
 			printf("username\t: %s\n",akun[i].username);
 			printf("password\t: %s\n",akun[i].password);
@@ -185,13 +198,13 @@ void sort(int jenis, int metode){
 			}
 			else if (jenis==3){
 				if(metode==1){
-					for (j=i; j>=gap && akun[j-gap].simpanan > temp.simpanan; j-=gap){
+					for (j=i; j>=gap && akun[j-gap].tabungan.simpanan > temp.tabungan.simpanan; j-=gap){
 						akun[j]= akun[j-gap];
 					}
 					akun[j]= temp;		
 				}
 				else{
-					for (j=i; j>=gap && akun[j-gap].simpanan < temp.simpanan; j-=gap){
+					for (j=i; j>=gap && akun[j-gap].tabungan.simpanan < temp.tabungan.simpanan; j-=gap){
 						akun[j]= akun[j-gap];
 					}
 					akun[j]= temp;
@@ -199,13 +212,13 @@ void sort(int jenis, int metode){
 			}
 			else if (jenis==4){
 				if(metode==1){
-					for (j=i; j>=gap && akun[j-gap].pinjaman > temp.pinjaman; j-=gap){
+					for (j=i; j>=gap && akun[j-gap].tabungan.besarpinjaman > temp.tabungan.besarpinjaman; j-=gap){
 						akun[j]= akun[j-gap];
 					}
 					akun[j]= temp;		
 				}
 				else{
-					for (j=i; j>=gap && akun[j-gap].pinjaman < temp.pinjaman; j-=gap){
+					for (j=i; j>=gap && akun[j-gap].tabungan.besarpinjaman < temp.tabungan.besarpinjaman; j-=gap){
 						akun[j]= akun[j-gap];
 					}
 					akun[j]= temp;
@@ -279,37 +292,6 @@ cari(char *dicari, int jenis){
 	}
 }
 
-
-
-
-//Former codeblock for jumpsearch method by username
-/*
-int cariData(char *x){
-	int jump = sqrt(indeks);
-	int back = 0;
-	while(min(jump, indeks)-1 < indeks){
-		back = jump;
-		jump += sqrt(indeks);
-		if (back >= indeks){
-			return -1;
-		}
-	}
-	while (back < indeks){
-		back++;
-		
-		if(back == min(jump, indeks)){
-			return -1;
-		}
-	}
-		
-	if (akun[back].username == x){
-		return back;
-		printf("Ketemu!!");
-	}
-	return -1;
-}
-*/
-
 int main(){
 	//variabel program
 	char user[16];
@@ -350,10 +332,13 @@ int main(){
 				fscanf(fpbuka, " %[^\n]%*c", &akun[i].kelamin);
 				fscanf(fpbuka, " %[^\n]%*c", &akun[i].pekerjaan);
 				fscanf(fpbuka, " %[^\n]%*c", &akun[i].nohp);
-				fscanf(fpbuka, "%d", &akun[i].simpanan);
-				fscanf(fpbuka, "%d", &akun[i].pinjaman);
-				fscanf(fpbuka, "%d", &akun[i].besarcicilan);
-				fscanf(fpbuka, "%d\n", &akun[i].cicilan);
+				fscanf(fpbuka, "%d", &akun[i].tabungan.simpanan);
+				fscanf(fpbuka, "%d", &akun[i].tabungan.bungasimpanan);
+				fscanf(fpbuka, "%d", &akun[i].tabungan.pinjaman);
+				fscanf(fpbuka, "%d", &akun[i].tabungan.besarpinjaman);
+				fscanf(fpbuka, "%d", &akun[i].tabungan.besarcicilan);
+				fscanf(fpbuka, "%d", &akun[i].tabungan.cicilan);
+				fscanf(fpbuka, "%d\n", &akun[i].tabungan.cicilanawal);
 			}
 		}
 		fclose(fpbuka);
@@ -454,10 +439,13 @@ int main(){
 					fprintf(fpwrite, "%s\n",akun[i].kelamin);
 					fprintf(fpwrite, "%s\n",akun[i].pekerjaan);
 					fprintf(fpwrite, "%s\n",akun[i].nohp);
-					fprintf(fpwrite, "%d\n",akun[i].simpanan);
-					fprintf(fpwrite, "%d\n",akun[i].pinjaman);
-					fprintf(fpwrite, "%d\n",akun[i].besarcicilan);
-					fprintf(fpwrite, "%d\n",akun[i].cicilan);
+					fprintf(fpwrite, "%d\n",akun[i].tabungan.simpanan);
+					fprintf(fpwrite, "%d\n",akun[i].tabungan.bungasimpanan);
+					fprintf(fpwrite, "%d\n",akun[i].tabungan.pinjaman);
+					fprintf(fpwrite, "%d\n",akun[i].tabungan.besarpinjaman);
+					fprintf(fpwrite, "%d\n",akun[i].tabungan.besarcicilan);
+					fprintf(fpwrite, "%d\n",akun[i].tabungan.cicilan);
+					fprintf(fpwrite, "%d\n",akun[i].tabungan.cicilanawal);
 				}
 				fclose(fpwrite);	
 				printf("==============Koperasi============\n");
@@ -474,18 +462,20 @@ int main(){
 		
 		else if(login==-2){
 			printf("============ADMINISTRATOR============\n");
-			printf("==============Koperasi===============\n");
 			printf("1. Manajemen Koperasi\n");
 			printf("2. Manajemen Akun Anggota\n\n");
+			printf("-------------------------------------\n");
 			printf("0. Log Out\n\n");
 			scanf("%d", &input);
 			system("cls");
 			if(input==1){
 				koperasi:
 				printf("============ADMINISTRATOR============\n");
+				printf("==============Koperasi===============\n");
 				printf("1.Kas Koperasi\n");
-				printf("-\n");
-				printf("-\n");
+				printf("2.Simpanan Anggota\n");
+				printf("3.Pinjaman Anggota\n");
+				printf("-------------------------------------\n");
 				printf("0. Kembali\n\n");
 				scanf("%d", &input);
 				system("cls");
@@ -495,18 +485,62 @@ int main(){
 					printf("Modal Awal Koperasi : Rp.5000000\n");
 					printf("Penghasilan dari Simpanan Pokok sebesar : Rp.%d\n", indeks*1000000);
 					
-					int totalpinjam=0, i, totalsimpan=0;
+					int totalpinjam=0, i, totalsimpan=0, totalbungasimpan=0;
 					for(i=0; i<indeks; i++){
-						totalpinjam+=akun[i].pinjaman;
-						totalsimpan+=akun[i].simpanan;
+						totalpinjam+=akun[i].tabungan.pinjaman;
+						totalsimpan+=akun[i].tabungan.simpanan;
+						totalbungasimpan+=akun[i].tabungan.bungasimpanan;
 					}
 					printf("Total Simpanan Anggota : Rp.%d\n",totalsimpan);
 					printf("Banyaknya cicilan yang belum lunas : -%d\n",totalpinjam);
+					printf("Besar bunga simpanan anggota per tahun : -%d\n",totalbungasimpan);
 					printf("---------------------------------------- +\n");
-					printf("Total : Rp.%d (+%d)\n\n",5000000+(indeks*1000000), totalpinjam);
+					printf("Total : Rp.%d (+%d)\n",5000000+(indeks*1000000), totalpinjam);
+					printf("Bayar bunga(pertahun) : Rp.%d (-%d)",5000000+(indeks*1000000)+totalpinjam, totalbungasimpan);
 					
 					getch();
 					system("cls");
+				}
+				else if(input==2){
+					printf("============Koperasi============\n\n");
+					int totalsimpan=0, totalbunga=0;
+					for(i=0; i<indeks; i++){
+						printf("----------------------------------\n");
+						printf("Nama\t\t: %s\n",akun[i].nama);
+						printf("Tabungan\t: Rp.%d\n",akun[i].tabungan.simpanan);
+						printf("Bunga\t\t: Rp.%d\n",akun[i].tabungan.bungasimpanan);
+						totalsimpan=totalsimpan+akun[i].tabungan.simpanan;
+						totalbunga+=akun[i].tabungan.bungasimpanan;
+						printf("----------------------------------\n\n");
+					}
+					printf("Total Simpanan Semua Anggota Koperasi = Rp. %d\n", totalsimpan);
+					printf("Bunga Semua Anggota Koperasi = Rp. %d", totalbunga);
+					getch();
+					system("cls");
+					goto menu;
+				}
+				else if(input==3){
+					printf("============Koperasi============\n\n");
+					int totalpinjam=0, totalpinjamanawal=0;
+					for(i=0; i<indeks; i++){
+						if(akun[i].tabungan.pinjaman>0){
+							printf("------------------------------------------\n");
+							printf("Nama\t\t: %s\n",akun[i].nama);
+							printf("Pinjaman\t: Rp.%d\n",akun[i].tabungan.besarpinjaman);
+							printf("Cicilan saat ini: Rp.%d\n",akun[i].tabungan.pinjaman);
+							printf("++++++++++++++++++++++++++++++++++++++++++\n");
+							printf("Cicilan ke-%d\n",akun[i].tabungan.cicilanawal-akun[i].tabungan.cicilan);
+							printf("Dari %d cicilan\n",akun[i].tabungan.cicilanawal);
+							totalpinjamanawal=totalpinjamanawal+akun[i].tabungan.besarpinjaman;
+							totalpinjam=totalpinjam+akun[i].tabungan.pinjaman;
+							printf("------------------------------------------\n\n");
+						}
+					}
+					printf("Total Pinjaman Semua Anggota Koperasi = Rp.%d\n", totalpinjamanawal);
+					printf("Penghasilan dari pinjaman : Rp.%d",totalpinjam-totalpinjamanawal);
+					getch();
+					system("cls");
+					goto menu;
 				}
 				else if(input==0){
 					system("cls");
@@ -576,8 +610,8 @@ int main(){
 					printf("Pekerjaan\t: %s\n",akun[i].pekerjaan);
 					printf("Nomor HP\t: %s\n",akun[i].nohp);
 					printf("-----------------------------\n");
-					printf("Tabungan\t: %d\n",akun[i].simpanan);
-					printf("Pinjaman\t: %d\n",akun[i].pinjaman);
+					printf("Tabungan\t: Rp.%d\n",akun[i].tabungan.simpanan);
+					printf("Pinjaman\t: Rp.%d\n",akun[i].tabungan.besarpinjaman);
 					printf("-----------------------------\n");
 					printf("username\t: %s\n",akun[i].username);
 					printf("password\t: %s\n",akun[i].password);
@@ -641,9 +675,6 @@ int main(){
 					printf("Kelamin\t\t: %s\n",akun[i].kelamin);
 					printf("Pekerjaan\t: %s\n",akun[i].pekerjaan);
 					printf("Nomor HP\t: %s\n",akun[i].nohp);
-					printf("-----------------------------\n");
-					printf("Tabungan\t: %d\n",akun[i].simpanan);
-					printf("Pinjaman\t: %d\n",akun[i].pinjaman);
 					printf("-----------------------------\n");
 					printf("username\t: %s\n",akun[i].username);
 					printf("password\t: %s\n",akun[i].password);
@@ -985,9 +1016,9 @@ int main(){
 							printf("Pekerjaan\t: %s\n",akun[ketemu].pekerjaan);
 							printf("Nomor HP\t: %s\n",akun[ketemu].nohp);
 							printf("-----------------------------\n");
-							printf("Tabungan\t: %d\n",akun[ketemu].simpanan);
-							printf("Pinjaman\t: %d\n",akun[ketemu].pinjaman);
-							printf("Besar Cicilan\t: %d\n",akun[ketemu].besarcicilan);
+							printf("Tabungan\t: %d\n",akun[ketemu].tabungan.simpanan);
+							printf("Pinjaman\t: %d\n",akun[ketemu].tabungan.besarpinjaman);
+							printf("Besar Cicilan\t: %d\n",akun[ketemu].tabungan.besarcicilan);
 							printf("-----------------------------\n");
 							printf("username\t: %s\n",akun[ketemu].username);
 							printf("password\t: %s\n",akun[ketemu].password);
@@ -1025,9 +1056,9 @@ int main(){
 							printf("Pekerjaan\t: %s\n",akun[ketemu].pekerjaan);
 							printf("Nomor HP\t: %s\n",akun[ketemu].nohp);
 							printf("-----------------------------\n");
-							printf("Tabungan\t: %d\n",akun[ketemu].simpanan);
-							printf("Pinjaman\t: %d\n",akun[ketemu].pinjaman);
-							printf("Besar Cicilan\t: %d\n",akun[ketemu].besarcicilan);
+							printf("Tabungan\t: Rp.%d\n",akun[ketemu].tabungan.simpanan);
+							printf("Pinjaman\t: Rp.%d\n",akun[ketemu].tabungan.besarpinjaman);
+							printf("Besar Cicilan\t: Rp.%d\n",akun[ketemu].tabungan.besarcicilan);
 							printf("-----------------------------\n");
 							printf("username\t: %s\n",akun[ketemu].username);
 							printf("password\t: %s\n",akun[ketemu].password);
@@ -1090,14 +1121,15 @@ int main(){
 			system("cls");
 			if(input==1){
 				printf("============Tabungan============\n");
-				if(akun[login].simpanan==0){
-					printf("Anda tidak memiliki tabungan...");
+				if(akun[login].tabungan.simpanan==0){
+					printf("Anda tidak memiliki tabungan...\n");
 					printf("--------------------------------\n\n");
 					getch();
 					system("cls");
 					goto menu;
 				}
-				printf("Anda memiliki tabungan sebesar Rp.%d\n\n",akun[login].simpanan);
+				printf("Anda memiliki tabungan sebesar Rp.%d\n",akun[login].tabungan.simpanan);
+				printf("Dengan bunga per tahun sebesar Rp.%d\n\n",akun[login].tabungan.bungasimpanan);
 				printf("--------------------------------\n\n");
 				printf("Apakah anda ingin mengambil tabungan anda?\n");
 				printf("1. Ya\n");
@@ -1112,7 +1144,7 @@ int main(){
 					withdraw:
 					printf("============Tabungan============\n");
 					printf("-----------Ambil Uang-----------\n");
-					printf("Saldo : %d\n",akun[login].simpanan);
+					printf("Saldo : %d\n",akun[login].tabungan.simpanan);
 					printf("--------------------------------\n");
 					printf("0. Kembali\n");
 					printf("================================\n\n");
@@ -1122,13 +1154,14 @@ int main(){
 						system("cls");
 						goto menu;
 					}
-					else if(uang<akun[login].simpanan){
-						akun[login].simpanan-=uang;
+					else if(uang<akun[login].tabungan.simpanan){
+						akun[login].tabungan.simpanan-=uang;
+						akun[login].tabungan.bungasimpanan=akun[login].tabungan.simpanan*7/100;
 						printf("Transaksi berhasil!");
 						getch();
 						system("cls");
 					}
-					else if(uang>akun[login].simpanan){
+					else if(uang>akun[login].tabungan.simpanan){
 						printf("Saldo anda tidak cukup...");
 						getch();
 						system("cls");
@@ -1143,16 +1176,17 @@ int main(){
 			else if(input==2){
 				printf("============Tabungan============\n\n");
 				printf("Masukkan nominal uang : ");
-				scanf("%d", &akun[login].simpanan);
+				scanf("%d", &akun[login].tabungan.simpanan);
 				printf("Tabungan telah ditambahkan.\n");
-				printf("Uang sejumlah Rp.%d telah ditambahkan ke dalam akun tabungan Anda...", akun[login].simpanan);
+				printf("Uang sejumlah Rp.%d telah ditambahkan ke dalam akun tabungan Anda...", akun[login].tabungan.simpanan);
+				akun[login].tabungan.bungasimpanan=akun[login].tabungan.simpanan*7/100;
 				getch();
 				system("cls");
 			}
 			else if(input==3){
 				pinjam:
 				printf("============Pinjaman============\n\n");
-				if(akun[login].pinjaman!=0 || akun[login].cicilan!=0){
+				if(akun[login].tabungan.pinjaman!=0 || akun[login].tabungan.cicilan!=0){
 					printf("Anda hanya bisa mempunyai 1 pinjaman!");
 					getch();
 					system("cls");
@@ -1188,9 +1222,11 @@ int main(){
 				system("cls");
 				if(input==1){
 					if(pinjam<kas){
-						akun[login].pinjaman = (pinjam+(bunga*cicil));
-						akun[login].cicilan = cicil;					
-						akun[login].besarcicilan = pinjam/cicil+bunga;
+						akun[login].tabungan.pinjaman = (pinjam+(bunga*cicil));
+						akun[login].tabungan.besarpinjaman = pinjam;
+						akun[login].tabungan.cicilanawal = cicil;
+						akun[login].tabungan.cicilan = cicil;					
+						akun[login].tabungan.besarcicilan = pinjam/cicil+bunga;
 						kas-=pinjam;
 						
 						printf("============Pinjaman============\n\n");
@@ -1204,7 +1240,7 @@ int main(){
 						printf("Formulir telah terkirim.\n");
 						printf("Kami akan menghubungi anda setelah kami menyetujui pencairan uang pinjaman anda.");
 						getch();
-						akun[login].cicilan=cicil;
+						akun[login].tabungan.cicilan=cicil;
 						system("cls");
 					}
 					else{
@@ -1215,10 +1251,10 @@ int main(){
 				}
 				goto menu;
 			}
-			else if(input==4){
-				printf("============Pinjaman============\n\n");
-				if(akun[login].pinjaman==0 && akun[login].besarcicilan==0){
-					if(akun[login].cicilan>0){
+			else if(input==4){	
+				if(akun[login].tabungan.pinjaman==0 && akun[login].tabungan.besarcicilan==0){
+					if(akun[login].tabungan.cicilan>0){
+						printf("============Pinjaman============\n\n");
 						printf("Anda belum menerima pencairan uang pinjaman.\n");
 						printf("Kami akan menghubungi anda setelah kami menyetujui pencairan uang pinjaman anda.");
 						getch();
@@ -1233,22 +1269,24 @@ int main(){
 					goto menu;
 				}
 				printf("============Pinjaman============\n\n");
-				printf("Sisa cicilan anda : Rp.%d\n", akun[login].pinjaman);
-				printf("Kurang cicilan : %d kali\n\n", akun[login].cicilan);
-				printf("Anda akan membayar sebesar : %d\n\n", akun[login].besarcicilan);
+				printf("Cicilan Awal : Rp.%d\n", akun[login].tabungan.besarpinjaman);
+				printf("Sisa cicilan anda : Rp.%d\n", akun[login].tabungan.pinjaman);
+				printf("Cicilan ke-%d\n",akun[login].tabungan.cicilanawal-akun[i].tabungan.cicilan);
+				printf("Dari %d cicilan\n\n",akun[login].tabungan.cicilanawal);
+				printf("Anda akan membayar sebesar : %d\n\n", akun[login].tabungan.besarcicilan);
 				printf("1. Konfirmasi\n");
 				printf("2. Batal\n\n");
 				printf("Input : ");
 				scanf("%d", &input);
 				if (input==1){
-					akun[login].pinjaman-=akun[login].besarcicilan;
-					akun[login].cicilan-=1;
+					akun[login].tabungan.pinjaman-=akun[login].tabungan.besarcicilan;
+					akun[login].tabungan.cicilan-=1;
 					//Masuk Kas
-					kas+=akun[login].besarcicilan;
-					if(akun[login].cicilan==0){
-						akun[login].pinjaman=0;
-						akun[login].cicilan=0;
-						akun[login].besarcicilan=0;
+					kas+=akun[login].tabungan.besarcicilan;
+					if(akun[login].tabungan.cicilan==0){
+						akun[login].tabungan.pinjaman=0;
+						akun[login].tabungan.cicilan=0;
+						akun[login].tabungan.besarcicilan=0;
 					}
 					system("cls");
 					printf("============Pinjaman============\n\n");
