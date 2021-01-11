@@ -668,7 +668,7 @@ int main(){
 						printf("Tidak ada Data anggota pada nomor %d!",input);
 						getch();
 						system("cls");
-						goto hapus;
+						goto ubah;
 					}
 					printf("============Ubah Anggota============\n");
 					printf("Nama\t\t: %s\n",akun[i].nama);
@@ -784,7 +784,7 @@ int main(){
 						system("cls");
 					}
 					else if(input==2){
-						goto hapus;
+						goto ubah;
 					}
 					else{
 						goto anggota;
@@ -1154,7 +1154,7 @@ int main(){
 						system("cls");
 						goto menu;
 					}
-					else if(uang<akun[login].tabungan.simpanan){
+					else if(uang<=akun[login].tabungan.simpanan){
 						akun[login].tabungan.simpanan-=uang;
 						akun[login].tabungan.bungasimpanan=akun[login].tabungan.simpanan*7/100;
 						printf("Transaksi berhasil!");
@@ -1174,11 +1174,13 @@ int main(){
 				}				
 			}
 			else if(input==2){
+				int temp=akun[login].tabungan.simpanan;
 				printf("============Tabungan============\n\n");
 				printf("Masukkan nominal uang : ");
-				scanf("%d", &akun[login].tabungan.simpanan);
+				scanf("%d", &temp);
+				akun[login].tabungan.simpanan+=temp;
 				printf("Tabungan telah ditambahkan.\n");
-				printf("Uang sejumlah Rp.%d telah ditambahkan ke dalam akun tabungan Anda...", akun[login].tabungan.simpanan);
+				printf("Uang sejumlah Rp.%d telah ditambahkan ke dalam akun tabungan Anda...", temp);
 				akun[login].tabungan.bungasimpanan=akun[login].tabungan.simpanan*7/100;
 				getch();
 				system("cls");
@@ -1225,7 +1227,7 @@ int main(){
 						akun[login].tabungan.pinjaman = (pinjam+(bunga*cicil));
 						akun[login].tabungan.besarpinjaman = pinjam;
 						akun[login].tabungan.cicilanawal = cicil;
-						akun[login].tabungan.cicilan = cicil;					
+						akun[login].tabungan.cicilan = cicil-1;					
 						akun[login].tabungan.besarcicilan = pinjam/cicil+bunga;
 						kas-=pinjam;
 						
@@ -1240,7 +1242,7 @@ int main(){
 						printf("Formulir telah terkirim.\n");
 						printf("Kami akan menghubungi anda setelah kami menyetujui pencairan uang pinjaman anda.");
 						getch();
-						akun[login].tabungan.cicilan=cicil;
+						akun[login].tabungan.cicilan=cicil-1;
 						system("cls");
 					}
 					else{
@@ -1271,7 +1273,7 @@ int main(){
 				printf("============Pinjaman============\n\n");
 				printf("Cicilan Awal : Rp.%d\n", akun[login].tabungan.besarpinjaman);
 				printf("Sisa cicilan anda : Rp.%d\n", akun[login].tabungan.pinjaman);
-				printf("Cicilan ke-%d\n",akun[login].tabungan.cicilanawal-akun[i].tabungan.cicilan);
+				printf("Cicilan ke-%d\n",akun[login].tabungan.cicilanawal-akun[login].tabungan.cicilan);
 				printf("Dari %d cicilan\n\n",akun[login].tabungan.cicilanawal);
 				printf("Anda akan membayar sebesar : %d\n\n", akun[login].tabungan.besarcicilan);
 				printf("1. Konfirmasi\n");
