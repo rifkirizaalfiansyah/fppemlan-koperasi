@@ -1,5 +1,5 @@
 6000000
-4
+3
 1
 1
 Sugiono
@@ -28,7 +28,7 @@ Perawat
 135999
 15
 15
-Wahyu
+Wahyuni
 wahyusan
 123456789
 Laki-laki
@@ -36,19 +36,6 @@ PNS
 08125337481
 2500000
 175000
-0
-0
-0
-0
-0
-Wardi
-wardiman
-namidraw
-Laki-laki
-PNS
-0822387161
-0
-0
 0
 0
 0

@@ -1223,7 +1223,7 @@ int main(){
 				scanf("%d", &input);
 				system("cls");
 				if(input==1){
-					if(pinjam<kas){
+					if(pinjam<=kas){
 						akun[login].tabungan.pinjaman = (pinjam+(bunga*cicil));
 						akun[login].tabungan.besarpinjaman = pinjam;
 						akun[login].tabungan.cicilanawal = cicil;
